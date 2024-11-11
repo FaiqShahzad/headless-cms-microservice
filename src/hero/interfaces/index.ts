@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export type HeroById = {
   id: number;
 };
@@ -8,5 +10,5 @@ export type Hero = {
 };
 
 export interface HeroesService {
-  findOne(data: HeroById): Hero;
+  findOne(data: HeroById): Observable<Hero>;
 }

@@ -1,5 +1,3 @@
-
-// hero/hero.proto
 syntax = "proto3";
 
 package hero;
