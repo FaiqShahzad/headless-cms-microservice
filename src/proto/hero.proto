@@ -12,5 +12,7 @@ message HeroById {
 
 message Hero {
   int32 id = 1;
-  string name = 2;
+  string firstName = 2;
+  string lastName = 3;
+  bool isActive = 4;
 }

@@ -6,7 +6,9 @@ export type HeroById = {
 
 export type Hero = {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
 };
 
 export interface HeroesService {

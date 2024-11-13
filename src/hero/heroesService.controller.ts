@@ -1,24 +1,30 @@
 import { status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { User } from 'src/entities/user.entity';
+import { EntityManager } from 'typeorm';
 import { Hero, HeroById } from './interfaces';
 
 @Controller()
 export class HeroesService {
-  private readonly items: Hero[] = [
-    { id: 1, name: 'Faiq' },
-    { id: 2, name: 'Ali' },
-  ];
+  constructor(private manager: EntityManager) {}
 
   @GrpcMethod()
-  findOne({ id }: HeroById): Hero {
-    const hero = this.items.find((hero) => hero.id === id);
+  async findOne({ id }: HeroById): Promise<Hero> {
+    const hero = await this.manager
+      .createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.id = :id', { id })
+      .getOne();
+
     if (!hero) {
       throw new RpcException({
         code: status.NOT_FOUND,
         message: `Hero with ID ${id} not found`,
       });
     }
+
     return hero;
   }
 }
