@@ -4,7 +4,12 @@ import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import * as _ from 'lodash';
 import { Users } from 'src/entities/user.entity';
 import { Message } from 'src/interfaces/common.interface';
-import { CreateUser, User, UserById } from 'src/interfaces/user.interface';
+import {
+  CreateUser,
+  UpdateUser,
+  User,
+  UserById,
+} from 'src/interfaces/user.interface';
 import { EntityManager } from 'typeorm';
 
 @Controller()
@@ -17,6 +22,7 @@ export class UserService {
       .createQueryBuilder()
       .select('user')
       .from(Users, 'user')
+      .orderBy('id')
       .getMany();
 
     if (_.isEmpty(users)) {
@@ -61,7 +67,7 @@ export class UserService {
   }
 
   @GrpcMethod()
-  async updateUser(userData: User): Promise<User> {
+  async updateUser(userData: UpdateUser): Promise<User> {
     const user = await Users.findOneBy({
       id: userData.id,
     });
