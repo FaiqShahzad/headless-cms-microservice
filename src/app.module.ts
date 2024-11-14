@@ -3,8 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { User } from './entities/user.entity';
-import { HeroesServiceModule } from './hero/heroesService.module';
+import { Users } from './entities/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -18,11 +18,12 @@ import { HeroesServiceModule } from './hero/heroesService.module';
         username: configService.get('POSTGRES_USER'),
         // password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [User],
+        entities: [Users],
         synchronize: true,
+        // dropSchema: configService.get('NODE_ENV') === 'development',
       }),
     }),
-    HeroesServiceModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

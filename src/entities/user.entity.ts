@@ -1,16 +1,16 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User extends BaseEntity {
+export class Users extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
+  first_name: string;
 
   @Column()
-  lastName: string;
+  last_name: string;
 
   @Column()
-  isActive: boolean;
+  is_active: boolean;
 }

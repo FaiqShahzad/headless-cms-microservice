@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package user;
+
+message User {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  bool is_active = 4;
+}
+
+message Users {
+  repeated User users = 1;
+}
+
+message Message {
+  string message = 1;
+}
+
+message Empty {
+}
+
+message UserById {
+  int32 id = 1;
+}
+
+message CreateUser {
+  string first_name = 2;
+  string last_name = 3;
+  bool is_active = 4;
+}
+
+message UpdateUser {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  bool is_active = 4;
+}
+
+service UserService {
+  rpc FindAll(Empty) returns (Users) {}
+  rpc FindOne(UserById) returns (User) {}
+  rpc CreateUser(CreateUser) returns (User) {}
+  rpc UpdateUser(UpdateUser) returns (User) {}
+  rpc DeleteUser(UserById) returns (Message) {}
+}
