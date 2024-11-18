@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
@@ -17,7 +18,8 @@ async function bootstrap() {
       },
     },
   );
-  app.useGlobalFilters(new AllExceptionsFilter());
+  const configService = app.get(ConfigService);
+  app.useGlobalFilters(new AllExceptionsFilter(configService));
   await app.listen();
 }
 bootstrap();

@@ -1,5 +1,8 @@
+import { Observable } from 'rxjs';
+
 export type User = {
   id: number;
+  email: string;
   first_name: string;
   last_name: string;
   is_active: boolean;
@@ -10,6 +13,7 @@ export type UserById = {
 };
 
 export type CreateUser = {
+  email: string;
   first_name: string;
   last_name: string;
   is_active: boolean;
@@ -17,7 +21,16 @@ export type CreateUser = {
 
 export type UpdateUser = {
   id: number;
+  email?: string;
   first_name?: string;
   last_name?: string;
   is_active?: boolean;
 };
+
+export interface IUserService {
+  findAll(data: object): Observable<User[]>;
+  findOne(data: UserById): Observable<User>;
+  createUser(data: CreateUser): Observable<User>;
+  updateUser(data: UpdateUser): Observable<User>;
+  deleteUser(data: UserById): Observable<User>;
+}
