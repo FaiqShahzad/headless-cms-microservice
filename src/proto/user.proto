@@ -5,9 +5,10 @@ package user;
 message User {
   int32 id = 1;
   string email = 2;
-  string first_name = 3;
-  string last_name = 4;
-  bool is_active = 5;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  bool is_active = 6;
 }
 
 message Users {
@@ -27,17 +28,19 @@ message UserById {
 
 message CreateUser {
   string email = 1;
-  string first_name = 2;
-  string last_name = 3;
-  bool is_active = 4;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+  bool is_active = 5;
 }
 
 message UpdateUser {
   int32 id = 1;
   string email = 2;
-  string first_name = 3;
-  string last_name = 4;
-  bool is_active = 5;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  bool is_active = 6;
 }
 
 service UserService {

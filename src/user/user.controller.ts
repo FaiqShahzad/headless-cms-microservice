@@ -56,14 +56,11 @@ export class UserService {
 
   @GrpcMethod()
   async createUser(user: CreateUser): Promise<User> {
-    const createdUser = await this.manager
-      .createQueryBuilder()
-      .insert()
-      .into(Users)
-      .values(user)
-      .execute();
+    const createdUser = await Users.create(user as Users);
 
-    return _.merge(_.first(_.get(createdUser, 'raw')), user) as User;
+    await createdUser.save();
+
+    return createdUser;
   }
 
   @GrpcMethod()

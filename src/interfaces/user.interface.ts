@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 export type User = {
   id: number;
   email: string;
+  password: string;
   first_name: string;
   last_name: string;
   is_active: boolean;
@@ -14,6 +15,7 @@ export type UserById = {
 
 export type CreateUser = {
   email: string;
+  password: string;
   first_name: string;
   last_name: string;
   is_active: boolean;
@@ -22,6 +24,7 @@ export type CreateUser = {
 export type UpdateUser = {
   id: number;
   email?: string;
+  password?: string;
   first_name?: string;
   last_name?: string;
   is_active?: boolean;
