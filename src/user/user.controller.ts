@@ -1,6 +1,7 @@
 import { status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import * as bcrypt from 'bcrypt';
 import * as _ from 'lodash';
 import { Users } from 'src/entities/user.entity';
 import { Message } from 'src/interfaces/common.interface';
@@ -76,7 +77,13 @@ export class UserService {
       });
     }
 
-    _.forEach(_.omit(userData, ['id']), (val, key) => _.set(user, key, val));
+    _.merge(user, _.omit(userData, ['id', 'password']));
+
+    if (
+      userData.password &&
+      !bcrypt.compareSync(userData.password, user.password)
+    )
+      user.password = bcrypt.hashSync(userData.password, 10);
 
     await user.save();
 

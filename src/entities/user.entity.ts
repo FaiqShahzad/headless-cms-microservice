@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import {
   BaseEntity,
   BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
   PrimaryGeneratedColumn,
@@ -29,8 +28,7 @@ export class Users extends BaseEntity {
   is_active: boolean;
 
   @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
+  hashPasswordBeforeInsert() {
+    this.password = bcrypt.hashSync(this.password, 10);
   }
 }
