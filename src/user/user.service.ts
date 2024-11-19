@@ -25,13 +25,6 @@ export class UserService {
       .orderBy('id')
       .getMany();
 
-    if (_.isEmpty(users)) {
-      throw new RpcException({
-        code: status.NOT_FOUND,
-        message: 'No users found',
-      });
-    }
-
     return { users };
   }
 
@@ -46,7 +39,7 @@ export class UserService {
     if (!user) {
       throw new RpcException({
         code: status.NOT_FOUND,
-        message: 'User not found',
+        message: `User with ID ${id} not found`,
       });
     }
 
@@ -69,7 +62,7 @@ export class UserService {
     if (!user) {
       throw new RpcException({
         code: status.NOT_FOUND,
-        message: 'User not found',
+        message: `User with ID ${userData.id} not found`,
       });
     }
 
@@ -94,7 +87,7 @@ export class UserService {
     if (!user) {
       throw new RpcException({
         code: status.NOT_FOUND,
-        message: 'User not found',
+        message: `User with ID ${id} not found`,
       });
     }
 
