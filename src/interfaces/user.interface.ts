@@ -9,6 +9,11 @@ export type User = {
   is_active: boolean;
 };
 
+export type LoginUser = {
+  email: string;
+  password: string;
+};
+
 export type UserById = {
   id: number;
 };

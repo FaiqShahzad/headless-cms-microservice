@@ -22,6 +22,11 @@ message Message {
 message Empty {
 }
 
+message LoginUser {
+  string email = 1;
+  string password = 2;
+};
+
 message UserById {
   int32 id = 1;
 }
@@ -44,6 +49,7 @@ message UpdateUser {
 }
 
 service UserService {
+  rpc Login(LoginUser) returns (User) {}
   rpc FindAll(Empty) returns (Users) {}
   rpc FindOne(UserById) returns (User) {}
   rpc CreateUser(CreateUser) returns (User) {}

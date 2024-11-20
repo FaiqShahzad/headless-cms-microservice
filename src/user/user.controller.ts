@@ -3,6 +3,7 @@ import { GrpcMethod } from '@nestjs/microservices';
 import { Message } from 'src/interfaces/common.interface';
 import {
   CreateUser,
+  LoginUser,
   UpdateUser,
   User,
   UserById,
@@ -12,6 +13,11 @@ import { UserService } from './user.service';
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @GrpcMethod('UserService')
+  async login(loginData: LoginUser): Promise<User> {
+    return this.userService.login(loginData);
+  }
 
   @GrpcMethod('UserService')
   async findAll(): Promise<Record<string, User[]>> {
@@ -29,8 +35,8 @@ export class UserController {
   }
 
   @GrpcMethod('UserService')
-  async updateUser(userData: UpdateUser): Promise<User> {
-    return this.userService.updateUser(userData);
+  async updateUser(user: UpdateUser): Promise<User> {
+    return this.userService.updateUser(user);
   }
 
   @GrpcMethod('UserService')

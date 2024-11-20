@@ -7,6 +7,7 @@ import { Users } from 'src/entities/user.entity';
 import { Message } from 'src/interfaces/common.interface';
 import {
   CreateUser,
+  LoginUser,
   UpdateUser,
   User,
   UserById,
@@ -16,6 +17,23 @@ import { EntityManager } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(private manager: EntityManager) {}
+
+  async login({ email, password }: LoginUser): Promise<User> {
+    const user = await this.manager
+      .createQueryBuilder()
+      .select('user')
+      .from(Users, 'user')
+      .where('user.email = :email', { email })
+      .getOne();
+
+    if (!user || !bcrypt.compareSync(password, user.password))
+      throw new RpcException({
+        code: status.UNAUTHENTICATED,
+        message: `Invalid email/password`,
+      });
+
+    return user;
+  }
 
   async findAll(): Promise<Record<string, User[]>> {
     const users = await this.manager
@@ -54,29 +72,29 @@ export class UserService {
     return createdUser;
   }
 
-  async updateUser(userData: UpdateUser): Promise<User> {
-    const user = await Users.findOneBy({
-      id: userData.id,
+  async updateUser(user: UpdateUser): Promise<User> {
+    const existingUser = await Users.findOneBy({
+      id: user.id,
     });
 
-    if (!user) {
+    if (!existingUser) {
       throw new RpcException({
         code: status.NOT_FOUND,
-        message: `User with ID ${userData.id} not found`,
+        message: `User with ID ${user.id} not found`,
       });
     }
 
-    _.merge(user, _.omit(userData, ['id', 'password']));
+    _.merge(existingUser, _.omit(user, ['id', 'password']));
 
     if (
-      userData.password &&
-      !bcrypt.compareSync(userData.password, user.password)
+      user.password &&
+      !bcrypt.compareSync(user.password, existingUser.password)
     )
-      user.password = bcrypt.hashSync(userData.password, 10);
+      existingUser.password = bcrypt.hashSync(user.password, 10);
 
-    await user.save();
+    await existingUser.save();
 
-    return user;
+    return existingUser;
   }
 
   async deleteUser({ id }: UserById): Promise<Message> {
