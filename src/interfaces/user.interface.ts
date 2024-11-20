@@ -36,6 +36,7 @@ export type UpdateUser = {
 };
 
 export interface IUserService {
+  login(data: LoginUser): Observable<User>;
   findAll(data: object): Observable<User[]>;
   findOne(data: UserById): Observable<User>;
   createUser(data: CreateUser): Observable<User>;
