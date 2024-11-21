@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice
+  labels:
+    app: microservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: microservice
+  template:
+    metadata:
+      labels:
+        app: microservice
+    spec:
+      containers:
+        - name: microservice
+          image: microservice:local
+          ports:
+            - containerPort: 5000
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: POSTGRES_HOST
+              value: 'postgres'
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_USER
+              value: 'faiqshahzad'
+            - name: POSTGRES_PASSWORD
+              value: '12345678'
+            - name: POSTGRES_DB
+              value: 'faiqshahzad'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice
+spec:
+  selector:
+    app: microservice
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
