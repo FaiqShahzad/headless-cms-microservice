@@ -26,7 +26,7 @@ export class UserService {
       .where('user.email = :email', { email })
       .getOne();
 
-    if (!user || !bcrypt.compareSync(password, user.password))
+    if (!user || !(await bcrypt.compare(password, user.password)))
       throw new RpcException({
         code: status.UNAUTHENTICATED,
         message: `Invalid email/password`,
@@ -88,9 +88,9 @@ export class UserService {
 
     if (
       user.password &&
-      !bcrypt.compareSync(user.password, existingUser.password)
+      !(await bcrypt.compare(user.password, existingUser.password))
     )
-      existingUser.password = bcrypt.hashSync(user.password, 10);
+      existingUser.password = await bcrypt.hash(user.password, 10);
 
     await existingUser.save();
 

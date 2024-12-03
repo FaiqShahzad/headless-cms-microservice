@@ -28,7 +28,7 @@ export class Users extends BaseEntity {
   is_active: boolean;
 
   @BeforeInsert()
-  hashPasswordBeforeInsert() {
-    if (this.password) this.password = bcrypt.hashSync(this.password, 10);
+  async hashPasswordBeforeInsert() {
+    if (this.password) this.password = await bcrypt.hash(this.password, 10);
   }
 }
